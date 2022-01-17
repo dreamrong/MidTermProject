@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<script src="../scripts/lottery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<style>
+    .header {
+        width: 630px;
+        background-color: #ffe401;
+        height: 80px;
+        line-height: 80px;
+    }
+
+    .lottery-logo {
+        display: inline-block;
+        padding: 10px;
+    }
+
+    .wrap {
+        padding: 1em;
+    }
+
+    button {
+        font-size: 22px;
+        width: 80px;
+        background: linear-gradient(210deg, #f18d2f, #ffffff);
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        display: inline-block;
+        border-radius: 8px;
+    }
+
+    button:hover {
+        background: black;
+        color: #fff;
+    }
+
+    .lottery-nums {
+        display: inline-block;
+        padding: 15px;
+        overflow: hidden;
+        width: 600px;
+        background-color: #fff7b2;
+    }
+
+    .lottery-nums>div {
+        display: inline-block;
+        float: left;
+        width: 25px;
+        height: 25px;
+        border: 1px solid #999;
+        background-color: #fff;
+        color: #555;
+        font-size: 20px;
+        padding: 10px;
+        text-align: center;
+        line-height: 25px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        border-radius: 50px;
+    }
+
+    .lottery-nums>div:hover {
+        background-color: rgb(255, 146, 5);
+        color: #fff;
+    }
+
+    .lottery-nums .selected {
+        background-color: green;
+        color: #fff;
+    }
+
+    .lottery-nums .highlight {
+        background-color: red;
+        color: #fff;
+    }
+
+    .lottery-nums .selected.highlight {
+        background-color: gold;
+        color: #333;
+    }
+
+    .lottery-result {
+        width: 620px;
+        padding: 10px 5px;
+        background-color: #ffe401;
+    }
+
+    .buttonbox {
+        padding-left: 95px;
+        font-size: 24px;
+        font-weight: bolder;
+    }
+
+    .lottery-result>div {
+        display: inline-block;
+    }
+
+    span>div {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 22px;
+        border-radius: 50px;
+        text-align: center;
+        margin: 0 5px;
+        padding-right: 1px;
+        background-color: red;
+        color: #fff;
+        display: inline-block
+    }
+
+    .resultbox {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        display: inline-block;
+        width: 630px;
+        height: 80px;
+        background: #b40006;
+        flex-wrap: wrap;
+    }
+
+    .resultlogo {
+        position: relative;
+        padding: 6px;
+        display: block;
+        width: 130px;
+        float: inline-end;
+        position: sticky;
+    }
+
+    .resultbox>div {
+        display: inline-block;
+        flex-basis: 17%;
+    }
+
+    .biglottery {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        width: 75px;
+        height: 75px;
+        position: absolute;
+    }
+
+    .ballholder>li {
+        position: relative;
+        left: 150;
+        top: -35px;
+        display: inline-block;
+        list-style: none;
+        height: 50px;
+        width: 50px;
+        background: rgb(252, 255, 94);
+        margin-left: 10px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 30px;
+        font-weight: 700px;
+        border: 1px solid slategrey;
+        border-radius: 50px;
+    }
+
+    /* 獎金列 和 開獎記錄 */
+    .matchbox1 {
+        box-sizing: border-box;
+        display: flex;
+        width: 630px;
+        vertical-align: top;
+    }
+
+    .matchbox2 {
+        display: inline-block;
+        width: 313px;
+    }
+
+    .matchbox2>ul {
+        list-style: none;
+        margin-top: 0px;
+        padding-left: 5px;
+    }
+
+    .matchbox2>ul>li {
+        width: 290px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 18px;
+        background: lightgray;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        padding-left: 10px;
+    }
+
+    .record {
+        margin: 0;
+        padding-left: 10px;
+        background: linear-gradient(45deg, #fc2c74, #ffd752);
+        color: #fff;
+        height: 205px;
+    }
+
+    .matchbox2>ul>li.getmoney {
+        background-color: gold;
+    }
+
+    .jackpotbox {
+        display: inline-block;
+        width: 300px;
+        height: 40px;
+        font-size: 30px;
+        line-height: 40px;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        padding-right: 0px;
+        border-radius: 50px;
+        background: #000;
+        color: #fff;
+        text-align: center;
+    }
+
+    .calculator>div.pocket {
+        width: 310px;
+        line-height: 40px;
+        font-size: 25px;
+        font-weight: bolder;
+        text-align: center;
+
+        color: cornflowerblue;
+    }
+</style>
+
+<body translate="no">
+    <div class="wrap">
+
+        <!-- 台灣彩券logo -->
+        <div class="header">
+            <img src="../images/tw_lottery_logo_01.jpg" class="lottery-logo" alt="">
+        </div>
+
+        <!-- 自動產生49組號碼 -->
+        <div class="lottery-nums">
+            <!--49個號碼區域-->
+        </div>
+
+        <!-- 執行按鈕 -->
+        <div class="lottery-result">
+            <div>
+                <button class="random-select">隨機</button>
+                <button class="btn-lottery">開獎</button>
+                <button class="reset">重玩</button>
+            </div>
+            <div class="buttonbox">
+                下 列 開 獎 號 碼
+                <span class="show">
+                    <!--開獎號碼顯示區域-->
+                </span>
+            </div>
+        </div>
+
+        <!-- 開獎結果區域 -->
+        <div class="resultbox">
+            <div class="logopic">
+                <img src="../images/biglotto_1.png" class="resultlogo" alt="">
+            </div>
+            <div class="ballsnums">
+                <ul class=ballholder>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- 水平橫線 -->
+        <hr style="width: 630px; margin-inline-start: 0;">
+
+        <!-- 金額計算機 -->
+        <div class="calculator" style="display:flex">
+            <div class="pocket">你目前的口袋深度</div>
+            <div id="screen" class="jackpotbox" value="100000">每注費用 $500</div>
+
+        </div>
+
+        <!-- 得獎金額(左邊) 和  開獎紀錄(右邊) -->
+        <div class="matchbox1">
+            <div class="matchbox2">
+                <!-- 得獎金額 -->
+                <ul class="winlight">
+                    <li value="500">恭喜你! 中 1 個號碼: 獎金 $500</li>
+                    <li value="1000">恭喜你! 中 2 個號碼: 獎金 $1000</li>
+                    <li value="3000">恭喜你! 中 3 個號碼: 獎金 $3000</li>
+                    <li value="6000">恭喜你! 中 4 個號碼: 獎金 $6000</li>
+                    <li value="10000">恭喜你! 中 5 個號碼: 獎金 $10000</li>
+                    <li value="15000">恭喜你! 中 6 個號碼: 獎金 $15000</li>
+                </ul>
+            </div>
+            <div class="matchbox2">
+                <p class="record">
+                    開獎紀錄:
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <script src="../scripts/lottery.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script id="rendered-js">
+        // 用來記錄開獎次數
+        var times = 0;
+        var sum = 100000;
+
+        // 產生 49 顆按鈕
+        for (var i = 1; i < 50; i++) {
+            $('.lottery-nums').append('<div>' + i + '</div>');
+        }
+
+        // 為數字按鈕加入事件，並限制只能點擊6次
+        $('.lottery-nums div').on('click', function () {
+            if ($('.selected').length < 6) {
+                $(this).addClass('selected');
+            }
+        });
+
+        // 重設按鈕，移除全部的按鈕的class
+        $('.reset').on('click', function () {
+            $('.lottery-nums div').removeClass('highlight selected');
+            $('.ballholder').children().remove();
+            $('.record').children().remove();
+            $('.winlight li.getmoney').removeClass('getmoney');
+            times = 0;
+            $('#screen').html(100000);
+        });
+
+        // 隨機選號
+        $('.random-select').on('click', function () {
+            $('.lottery-nums div.selected').removeClass('selected'); // 清除上一組隨機選號
+            var luckynum = [],
+                selectnum;
+            while (luckynum.length < 6) {
+                selectnum = parseInt(Math.random() * 49 + 1, 10)
+                if (luckynum.indexOf(selectnum) === -1) {
+                    luckynum.push(selectnum);
+                }
+            }
+
+            for (var r = 0; r < luckynum.length; r++) {
+                $('.lottery-nums div').eq(luckynum[r] - 1).addClass('selected')
+            }
+        })
+
+
+        // 執行開獎
+        $('.btn-lottery').on('click', function () {
+
+            // 先移除開獎的紅色class
+            $('.lottery-nums div.highlight').removeClass('highlight');
+            $('.winlight li.getmoney').removeClass('getmoney');
+
+            // 先移除上一期開出的彩球
+            $('.ballholder').children().remove();
+
+            // 尋找自己點擊的綠色class數量
+            var selected_box = $('.selected').length;
+
+            // 如果綠色class的數量小於6跳出警告視窗，return true後面的程式不會執行
+            if (selected_box < 6) {
+                alert('注意！您尚未選取六位數');
+                return ture;
+            }
+
+
+            // 樂透1~49 隨機產生6位數字
+            var lottery = [],
+                number;
+
+            while (lottery.length < 6) {
+                number = parseInt(Math.random() * 49 + 1, 10);
+
+                if (lottery.indexOf(number) === -1) {
+                    lottery.push(number);
+                }
+            }
+
+            console.log(lottery);
+
+            //  開出的獎號並在數字上增加紅色的class
+            for (i = 0; i < lottery.length; i++) {
+                $('.lottery-nums div').eq(lottery[i] - 1).addClass('highlight');
+                $('.ballholder').append("<li class='ballnums'>" + lottery[i] + "</li>");
+            }
+
+            // 用來存開獎出來的樂透號碼
+            var new_numbers = '';
+            var my_numbers = '';
+
+            // 開出的號碼由小到大排列
+            lottery.sort();
+
+            // 撈出開獎號碼並加上逗號讓數字分開
+            for (var n = 0; n < lottery.length; n++) {
+                new_numbers += lottery[n];
+                if (n < 5) {
+                    new_numbers += ',';
+                }
+            }
+
+            // 把開獎號碼印到<span>標籤裡
+            // $('span').text(new_numbers);
+
+            // 開獎次數+1  
+            times++;
+            console.log(times);
+
+            // 紀錄開獎資訊並append進去
+            $('.record').append('<div>' + '第 ' + times + ' 次樂透開獎：' + new_numbers + '</div>');
+
+            // 找出符合.selected.highlight 有這兩個class代表你中獎
+            var bingo = $('.selected.highlight').length;
+
+            // 提示您兌中數量  (由旁邊中獎燈取代)
+            // $('.record').append('<div class="bingo">' + '您中了 ' + bingo + ' 個號碼：' + my_numbers + '</div>');
+
+            // alert('您兌中' + bingo + '位數');
+            if (bingo != 0) {
+                $('.winlight li').eq(bingo - 1).addClass('getmoney');
+            }
+            console.log(bingo)
+
+            // 扣除下注費後，計算累加中獎金額
+            $('#screen').html(sum);
+            if (times > 0) {
+                sum -= 500;
+            }
+            console.log(sum);
+
+            if (bingo == 1) {
+                sum += 500;
+            } else if (bingo == 2) {
+                sum += 1000;
+            } else if (bingo == 3) {
+                sum += 3000;
+            } else if (bingo == 4) {
+                sum += 6000;
+            } else if (bingo == 5) {
+                sum += 10000;
+            } else if (bingo == 6) {
+                sum += 15000;
+            };
+            console.log(sum);
+
+            $('#screen').html(sum);
+
+        });
+    </script>
+
+
+
+
+
+
+
+</body>
+
+
+</html>
